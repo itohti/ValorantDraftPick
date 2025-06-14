@@ -1,9 +1,21 @@
-import React, { useState } from "react";
-import playerData from './player_cards.json';
+import { useState, useEffect } from "react";
+import axios from "axios";
 import PlayerCard from "./components/PlayerCard";
 
 function App() {
   const [draftedSet, setDraftedSet] = useState(new Set());
+
+  const [playerData, setPlayerData] = useState([]);
+
+  useEffect(() => {
+    axios.get("https://sunnycup.izdartohti.org/players")
+      .then((response) => setPlayerData(response.data))
+      .catch((error) => {
+        console.error("Could not fetch playerData");
+      });
+  }, [])
+
+  console.log(playerData);
 
   const toggleDraft = (idx) => {
     setDraftedSet(prev => {
