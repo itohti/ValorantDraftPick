@@ -19,7 +19,7 @@ const roleIcons = {
 
 
 export default function PlayerCard({ data, drafted, toggleDraft }) {
-  const roles = data.Roles ? data.Roles.split(",") : [];
+  const roles = data.roles ? data.roles.split(",") : [];
 
   return (
     <div
@@ -34,13 +34,13 @@ export default function PlayerCard({ data, drafted, toggleDraft }) {
         </div>
       )}
       {/* header */}
-      <h2 className="text-2xl font-semibold mb-1">{data.Name}</h2>
-      <p className="text-sm text-gray-400 mb-4">IGN: {data.IGN}</p>
+      <h2 className="text-2xl font-semibold mb-1">{data.name}</h2>
+      <p className="text-sm text-gray-400 mb-4">IGN: {data.ign}</p>
 
       {/* ranks */}
       <div className="flex justify-between mb-4">
-        <RankBlock label="Peak Rank" rank={data.PeakRank} />
-        <RankBlock label="Current Rank" rank={data.CurrentRank} />
+        <RankBlock label="Peak Rank" rank={data.peak_rank} />
+        <RankBlock label="Current Rank" rank={data.current_rank} />
       </div>
 
       {/* roles */}
@@ -62,7 +62,7 @@ export default function PlayerCard({ data, drafted, toggleDraft }) {
         <h3 className="text-sm font-medium text-gray-300 mb-1">
           Teammate&nbsp;Preferences
         </h3>
-        <p>{data.TeammatePreferences}</p>
+        <p>{data.teammate_preferences}</p>
       </div>
     </div>
   );
