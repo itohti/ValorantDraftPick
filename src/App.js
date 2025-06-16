@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import PlayerCard from "./components/PlayerCard";
+import Teams from "./components/Teams";
 
 function App() {
   const [draftedSet, setDraftedSet] = useState(new Set());
@@ -33,6 +34,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-900 p-8">
+      <Teams />
       <h1 className="text-3xl font-bold text-white mb-6">Draft Pool</h1>
       <p className="text-white text-lg font-semibold mb-4">
         Players Left: {numberLeft}
