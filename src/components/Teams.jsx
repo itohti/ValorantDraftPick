@@ -34,7 +34,7 @@ export default function Teams() {
         <>
             {popup && <CreateTeam setPopup={setPopup} />}
             <div className="absolute right-10">
-                {teams.length !== 0 && teams.map((team) => <Team team={team} />)}
+                {teams.length !== 0 && teams.map((team) => <Team key={team.id} team={team} />)}
                 {/* Create a team place holder */}
                 <div className="p-2">
                     <div className="grid grid-cols-6 gap-4 p-2">
