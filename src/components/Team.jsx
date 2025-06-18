@@ -1,6 +1,7 @@
 import RankBlock from "./RankBlock";
 import axios from "axios";
 import Button from "../ui/Button";
+import Tooltip from "../ui/Tooltip";
 export default function Team({ team }) {
     const selections = JSON.parse(team.selections);
     
@@ -27,9 +28,13 @@ export default function Team({ team }) {
     return (
         <div className="p-2 group relative">
             <div className="grid grid-cols-6 gap-4 p-2">
-                <p className="text-white text-xl p-2">{shortName}</p>
+                <Tooltip text={team.name} >
+                    <p className="text-white text-xl p-2">{shortName}</p>
+                </Tooltip>
                 {selections.length !== 0 && selections.map((teammate, i) => (
-                    <RankBlock key={i} rank={teammate.peak_rank} />
+                    <Tooltip text={teammate.name}>
+                        <RankBlock key={i} rank={teammate.peak_rank} />
+                    </Tooltip>
                 ))}
             </div>
 
