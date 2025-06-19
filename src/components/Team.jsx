@@ -14,7 +14,10 @@ export default function Team({ team }) {
     }
 
     const removeTeam = () => {
-        axios.delete(`https://sunnycup.izdartohti.org/teams/${team.id}`)
+        let user = JSON.parse(localStorage.getItem("user"));
+        axios.delete(`https://sunnycup.izdartohti.org/teams/${team.id}`, {headers: {
+            Authorization: `Bearer ${user.token}`
+        }})
         .then((response) => {
             console.log("sucessfully removed team");
         })
