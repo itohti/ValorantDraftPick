@@ -1,3 +1,22 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;  
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #1f2937; 
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #5792f1; 
+  border-radius: 10px;
+  border: 2px solid #1f2937; 
+}
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #023991 #1f2937; 
+}
