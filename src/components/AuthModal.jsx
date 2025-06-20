@@ -23,11 +23,11 @@ export default function AuthModal({ onClose, onLogin }) {
                         onClose();
                     })
                     .catch((error) => {
-                        console.error("Could not sign you in");
+                        setError(error.response.data);
                     })
             })
             .catch((error) => {
-                setError(error);
+                setError(error.response.data);
             })
     }
     else {
@@ -38,7 +38,7 @@ export default function AuthModal({ onClose, onLogin }) {
                 onClose();
             })
             .catch((error) => {
-                console.error("Could not sign you in");
+                setError(error.response.data);
             })
     }
   };

@@ -5,7 +5,6 @@ export default function UserMenu({ onOpenAuth, onLogout, onDelete, isLoggedIn })
   const [open, setOpen] = useState(false);
 
   const user = JSON.parse(localStorage.getItem("user"));
-  console.log(user);
 
   return (
     <div className="relative text-white">

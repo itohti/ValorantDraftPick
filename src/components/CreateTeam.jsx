@@ -5,6 +5,7 @@ import TextBox from "../ui/TextBox";
 
 export default function CreateTeam({ setPopup }) {
     const [teamName, setTeamName] = useState("");
+    const [error, setError] = useState(null);
 
     const handleCreate = () => {
         let user = JSON.parse(localStorage.getItem("user"));
@@ -17,9 +18,12 @@ export default function CreateTeam({ setPopup }) {
                 console.log(response); // create some sort of user feedback that the request went through.
             })
             .catch((error) => {
-                console.error(error);
+                setError(error.response.data);
             })
             setPopup(false);
+        }
+        else {
+            setError("You must be signed in to create a team.");
         }
     };
 
@@ -41,6 +45,7 @@ export default function CreateTeam({ setPopup }) {
                     placeholder="Enter team name"
                 />
                 <Button label="Create" onClick={handleCreate} />
+                {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
             </div>
         </div>
     );

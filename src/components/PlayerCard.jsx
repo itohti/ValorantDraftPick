@@ -1,8 +1,9 @@
 import RankBlock from "./RankBlock";
 import RoleChip from "./RoleChip";
 
-export default function PlayerCard({ data, drafted, toggleDraft }) {
+export default function PlayerCard({ data, toggleDraft }) {
   const roles = data.roles ? data.roles.split(",") : [];
+  const drafted = data?.drafted;
 
   return (
     <div

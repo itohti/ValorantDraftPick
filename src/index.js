@@ -3,11 +3,17 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { DraftProvider } from './context/DraftContext';
+import { WebSocketProvider } from './context/WebSocketContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <DraftProvider>
+      <WebSocketProvider>
+          <App />
+      </WebSocketProvider>
+    </DraftProvider>
   </React.StrictMode>
 );
 

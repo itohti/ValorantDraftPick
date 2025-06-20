@@ -4,18 +4,21 @@ import PlayerCard from "./components/PlayerCard";
 import Teams from "./components/Teams";
 import UserMenu from "./components/UserMenu";
 import AuthModal from "./components/AuthModal";
+import { useDraft } from "./context/DraftContext";
 
 function App() {
   const [draftedSet, setDraftedSet] = useState(new Set());
-
-  const [playerData, setPlayerData] = useState([]);
+  const { players, draftState, setPlayers } = useDraft();
 
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [user, setUser] = useState(localStorage.getItem("user"));
 
   const openAuth = () => setAuthModalOpen(true);
   const closeAuth = () => setAuthModalOpen(false);
-  const logout = () => setUser(null);
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem("user");
+  };
   const deleteAccount = () => {
     axios
       .delete("https://sunnycup.izdartohti.org/users", {
@@ -23,33 +26,41 @@ function App() {
           Authorization: `Bearer ${user.token}`,
         },
       })
-      .then(() => setUser(null));
+      .then(() => {
+        setUser(null);
+        localStorage.removeItem("user");
+      });
   };
 
   useEffect(() => {
     axios
       .get("https://sunnycup.izdartohti.org/players")
-      .then((response) => setPlayerData(response.data))
+      .then((response) => setPlayers(response.data))
       .catch((error) => {
-        console.error("Could not fetch playerData");
+        console.error("Could not fetch playerData", error);
       });
   }, []);
 
-  console.log(playerData);
+  const toggleDraft = (player) => {
+    if (draftState?.phase !== "Drafting") return;
 
-  const toggleDraft = (idx) => {
-    setDraftedSet((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(idx)) {
-        newSet.delete(idx);
-      } else {
-        newSet.add(idx);
-      }
-      return newSet;
-    });
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    axios
+      .post("https://sunnycup.izdartohti.org/draft/pick", player, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      })
+      .then((response) => {
+        console.log("Drafted player:", player.name);
+      })
+      .catch((error) => {
+        console.error("Failed to draft player:", error);
+      });
   };
 
-  const numberLeft = playerData.length - draftedSet.size;
+  const numberLeft = players.length - draftedSet.size;
 
   return (
     <div className="min-h-screen bg-gray-900 p-8">
@@ -81,12 +92,11 @@ function App() {
             }}
           >
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
-              {playerData.map((player, idx) => (
+              {players.map((player, idx) => (
                 <PlayerCard
                   key={idx}
                   data={player}
-                  drafted={draftedSet.has(idx)}
-                  toggleDraft={() => toggleDraft(idx)}
+                  toggleDraft={() => toggleDraft(player)}
                 />
               ))}
             </div>
