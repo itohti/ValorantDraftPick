@@ -53,11 +53,13 @@ export default function Team({ team }) {
                 </div>
 
                 {/* Remove Button */}
-                <Button
-                    label="✕"
-                    className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200 px-2 py-1"
-                    onClick={removeTeam}
-                />
+                {draftState?.phase !== "Drafting" && (
+                    <Button
+                        label="✕"
+                        className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200 px-2 py-1"
+                        onClick={removeTeam}
+                    />
+                )}
 
                 <div className="h-1 h-px bg-gradient-to-r from-white/50 to-white/0" />
             </div>

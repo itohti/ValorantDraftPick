@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import Button from "../ui/Button";
 import CreateTeam from "./CreateTeam";
@@ -6,49 +6,8 @@ import Team from "./Team";
 import { useDraft } from "../context/DraftContext";
 
 export default function Teams() {
-  const [teams, setTeams] = useState([]);
   const [popup, setPopup] = useState(false);
-  const { draftState, setDraftState } = useDraft();
-  const socketRef = useRef(null);
-
-  useEffect(() => {
-    socketRef.current = new WebSocket("wss://sunnycup.izdartohti.org/ws");
-
-    socketRef.current.onopen = () => {
-      console.log("websocket connected");
-    };
-
-    socketRef.current.onmessage = (event) => {
-      const message = event.data;
-      try {
-        const data = JSON.parse(message);
-
-        if (data.type === "teams_update") {
-          setTeams(data.teams);
-        } 
-        else if (data.type === "draft_update") {
-          setDraftState(data.draft_state);
-        }
-        else if (data.type === "player_update"){
-          console.log(data);
-        }
-      } catch {
-        console.warn("Received non-JSON message", message);
-      }
-    };
-
-    socketRef.current.onerror = (error) => {
-      console.error("WebSocket error:", error);
-    };
-
-    socketRef.current.onclose = () => {
-      console.log("WebSocket disconnected");
-    };
-
-    return () => {
-      socketRef.current.close();
-    };
-  }, []);
+  const { draftState, teams, setTeams } = useDraft();
 
   useEffect(() => {
     if (!draftState) return;
