@@ -5,6 +5,8 @@ import Teams from "./components/Teams";
 import UserMenu from "./components/UserMenu";
 import AuthModal from "./components/AuthModal";
 import { useDraft } from "./context/DraftContext";
+import Button from "./ui/Button";
+import Tooltip from "./ui/Tooltip";
 
 function App() {
   const [draftedSet, setDraftedSet] = useState(new Set());
@@ -15,10 +17,12 @@ function App() {
 
   const openAuth = () => setAuthModalOpen(true);
   const closeAuth = () => setAuthModalOpen(false);
+
   const logout = () => {
     setUser(null);
     localStorage.removeItem("user");
   };
+
   const deleteAccount = () => {
     axios
       .delete("https://sunnycup.izdartohti.org/users", {
@@ -32,13 +36,17 @@ function App() {
       });
   };
 
-  useEffect(() => {
+  const getPlayers = () => {
     axios
       .get("https://sunnycup.izdartohti.org/players")
       .then((response) => setPlayers(response.data))
       .catch((error) => {
         console.error("Could not fetch playerData", error);
       });
+  }
+
+  useEffect(() => {
+    getPlayers();
   }, []);
 
   const toggleDraft = (player) => {
@@ -81,10 +89,18 @@ function App() {
         {/* Main Draft Pool */}
         <div className="flex-1">
           <h1 className="text-3xl font-bold text-white mb-6">Draft Pool</h1>
-          <p className="text-white text-lg font-semibold mb-4">
-            Players Left: {numberLeft}
-          </p>
-
+          <div className="flex items-center justify-between text-white mb-4">
+            <p className="text-lg font-semibold">
+              Players Left: {numberLeft}
+            </p>
+            <Tooltip text="Refresh">
+              <Button
+                icon={<img src="/icons/refresh.png" className="w-4 h-4" alt="refresh" />}
+                className="p-1"
+                onClick={getPlayers}
+              />
+            </Tooltip>
+          </div>
           <div
             className="overflow-y-auto pr-2 custom-scrollbar"
             style={{
