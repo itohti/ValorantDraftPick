@@ -7,6 +7,7 @@ import AuthModal from "./components/AuthModal";
 import { useDraft } from "./context/DraftContext";
 import Button from "./ui/Button";
 import Tooltip from "./ui/Tooltip";
+import Loading from "./ui/Loading";
 
 function App() {
   const [draftedSet, setDraftedSet] = useState(new Set());
@@ -14,6 +15,7 @@ function App() {
 
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [user, setUser] = useState(localStorage.getItem("user"));
+  const [loading, setLoading] = useState(false);
 
   const openAuth = () => setAuthModalOpen(true);
   const closeAuth = () => setAuthModalOpen(false);
@@ -37,11 +39,16 @@ function App() {
   };
 
   const getPlayers = () => {
+    setLoading(true);
     axios
       .get("https://sunnycup.izdartohti.org/players")
-      .then((response) => setPlayers(response.data))
+      .then((response) => {
+        setPlayers(response.data);
+        setLoading(false);
+      })
       .catch((error) => {
         console.error("Could not fetch playerData", error);
+        setLoading(false);
       });
   }
 
@@ -72,6 +79,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-900 p-8">
+      {loading && <Loading />}
       {/* User Menu */}
       <div className="absolute top-4 right-4 z-50">
         <UserMenu
