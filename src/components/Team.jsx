@@ -55,7 +55,7 @@ export default function Team({ team }) {
                 {/* Remove Button */}
                 {draftState?.phase !== "Drafting" && (
                     <Button
-                        label="✕"
+                        icon={<img src="/icons/trashcan.png" className="w-4 h-4" alt="delete" />}
                         className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200 px-2 py-1"
                         onClick={removeTeam}
                     />
