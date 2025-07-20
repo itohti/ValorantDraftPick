@@ -44,7 +44,15 @@ export default function CreateTeam({ setPopup }) {
                     onChange={(e) => setTeamName(e.target.value)}
                     placeholder="Enter team name"
                 />
-                <Button label="Create" onClick={handleCreate} />
+                <Button
+                    label="Create"
+                    onClick={handleCreate}
+                    disabled={teamName.trim() === ""}
+                    className={`
+                        !bg-blue-600 !hover:bg-blue-700  
+                        disabled:bg-blue-200 disabled:opacity-50 disabled:cursor-not-allowed
+                    `}
+                />
                 {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
             </div>
         </div>
