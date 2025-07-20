@@ -9,37 +9,46 @@ export default function AuthModal({ onClose, onLogin }) {
     ign: "",
     password: "",
   });
+
   const [error, setError] = useState("");
 
   const handleAuth = () => {
     if (isRegistering) {
-        axios.post("https://sunnycup.izdartohti.org/users", form)
+      axios
+        .post("https://sunnycup.izdartohti.org/users", form)
+        .then((response) => {
+          /* Chain it with a login request now. */
+          axios
+            .post("https://sunnycup.izdartohti.org/login", {
+              username: form.username,
+              password: form.password,
+            })
             .then((response) => {
-                /* Chain it with a login request now. */
-                axios.post("https://sunnycup.izdartohti.org/login", {username: form.username, password: form.password})
-                    .then((response) => {
-                        onLogin(response.data);
-                        localStorage.setItem("user", JSON.stringify(response.data));
-                        onClose();
-                    })
-                    .catch((error) => {
-                        setError(error.response.data);
-                    })
+              onLogin(response.data);
+              localStorage.setItem("user", JSON.stringify(response.data));
+              onClose();
             })
             .catch((error) => {
-                setError(error.response.data);
-            })
-    }
-    else {
-        axios.post("https://sunnycup.izdartohti.org/login", {username: form.username, password: form.password})
-            .then((response) => {
-                onLogin(response.data);
-                localStorage.setItem("user", JSON.stringify(response.data));
-                onClose();
-            })
-            .catch((error) => {
-                setError(error.response.data);
-            })
+              setError(error.message);
+            });
+        })
+        .catch((error) => {
+          setError(error.message);
+        });
+    } else {
+      axios
+        .post("https://sunnycup.izdartohti.org/login", {
+          username: form.username,
+          password: form.password,
+        })
+        .then((response) => {
+          onLogin(response.data);
+          localStorage.setItem("user", JSON.stringify(response.data));
+          onClose();
+        })
+        .catch((error) => {
+          setError(error.message);
+        });
     }
   };
 
