@@ -4,9 +4,11 @@ import Button from "../ui/Button";
 import CreateTeam from "./CreateTeam";
 import Team from "./Team";
 import { useDraft } from "../context/DraftContext";
+import ConfirmationModal from "./ComfirmationModal";
 
 export default function Teams() {
   const [popup, setPopup] = useState(false);
+  const [confirmingStop, setConfirmingStop] = useState(false);
   const { draftState, teams, setTeams } = useDraft();
 
   useEffect(() => {
@@ -66,6 +68,19 @@ export default function Teams() {
   return (
     <>
       {popup && <CreateTeam setPopup={setPopup} />}
+
+      <ConfirmationModal 
+        isOpen={confirmingStop}
+        title="Stop Tournament?"
+        message="This will end the current draft and delete all teams. Are you sure you want to proceed?"
+        confirmLabel="Yes, Stop"
+        cancelLabel="Cancel"
+        onConfirm={() => {
+          stopTournament();
+          setConfirmingStop(false);
+        }}
+        onCancel={() => setConfirmingStop(false)}
+      />
       <div className="text-white">
         <h2 className="text-xl font-bold mb-4">Teams</h2>
         {teams.length !== 0 &&
@@ -84,7 +99,7 @@ export default function Teams() {
               <div className="h-1 h-px bg-gradient-to-r from-white/50 to-white/0" />
               <Button
                 label={"Start Tournament"}
-                disabled={teams.length === 0}
+                disabled={teams.length < 2}
                 onClick={startTournament}
                 className="mt-4 w-full"
               />
@@ -92,7 +107,7 @@ export default function Teams() {
           ) : (
             <Button
               label={"Stop Tournament"}
-              onClick={stopTournament}
+              onClick={() => setConfirmingStop(true)}
               className="mt-4 w-full bg-red-600 hover:bg-red-700"
             />
           )}
