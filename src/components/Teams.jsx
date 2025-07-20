@@ -84,6 +84,7 @@ export default function Teams() {
               <div className="h-1 h-px bg-gradient-to-r from-white/50 to-white/0" />
               <Button
                 label={"Start Tournament"}
+                disabled={teams.length === 0}
                 onClick={startTournament}
                 className="mt-4 w-full"
               />
