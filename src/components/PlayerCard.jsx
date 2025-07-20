@@ -1,3 +1,4 @@
+import Tooltip from "../ui/Tooltip";
 import RankBlock from "./RankBlock";
 import RoleChip from "./RoleChip";
 
@@ -23,8 +24,12 @@ export default function PlayerCard({ data, toggleDraft }) {
 
       {/* ranks */}
       <div className="flex justify-between mb-4">
-        <RankBlock label="Peak Rank" rank={data.peak_rank} />
-        <RankBlock label="Current Rank" rank={data.current_rank} />
+        <Tooltip text={data.peak_rank}>
+          <RankBlock label="Peak Rank" rank={data.peak_rank} />
+        </Tooltip>
+        <Tooltip text={data.current_rank}>
+          <RankBlock label="Current Rank" rank={data.current_rank} />
+        </Tooltip>
       </div>
 
       {/* roles */}
