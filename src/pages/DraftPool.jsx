@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import PlayerCard from "../components/PlayerCard";
+import PlayerFilter from "../components/PlayerFilter";
 import Teams from "../components/Teams";
 import Button from "../ui/Button";
 import Tooltip from "../ui/Tooltip";
@@ -11,6 +12,14 @@ export default function DraftPool() {
   const [draftedSet, setDraftedSet] = useState(new Set());
   const { players, draftState, setPlayers } = useDraft();
   const [loading, setLoading] = useState(false);
+  const [roleFilter, setRoleFilter] = useState("");
+
+  let filteredPlayers = [...players];
+  if (roleFilter) {
+    filteredPlayers = filteredPlayers.filter((p) =>
+      p.roles?.split(",").includes(roleFilter)
+    );
+  }
 
   const getPlayers = () => {
     setLoading(true);
@@ -55,7 +64,9 @@ export default function DraftPool() {
     <div className="p-8">
       {loading && <Loading />}
       <div className="flex items-center justify-between mb-4">
-        <p className="text-lg font-semibold">Players Left: {numberLeft}</p>
+        <div className="bg-indigo-900 text-indigo-300 px-4 py-1 rounded-full text-xl font-bold shadow">
+          Players Left: {numberLeft}
+        </div>
         <Tooltip text="Refresh">
           <Button
             icon={
@@ -66,13 +77,17 @@ export default function DraftPool() {
           />
         </Tooltip>
       </div>
+      <PlayerFilter
+        roleFilter={roleFilter}
+        setRoleFilter={setRoleFilter}
+      />
       <div className="flex gap-8">
         <div
           className="flex-1 overflow-y-auto pr-2 custom-scrollbar"
           style={{ maxHeight: "calc(100vh - 200px)" }}
         >
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
-            {players.map((p, i) => (
+            {filteredPlayers.map((p, i) => (
               <PlayerCard key={i} data={p} toggleDraft={() => toggleDraft(p)} />
             ))}
           </div>

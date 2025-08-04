@@ -8,8 +8,8 @@ export default function NavBar() {
         end
         className={({ isActive }) =>
           isActive
-            ? 'underline font-semibold'
-            : 'hover:underline'
+            ? 'bg-indigo-600 text-white px-3 py-1 rounded-md font-semibold transition'
+            : 'hover:underline px-3 py-1 transition'
         }
       >
         Draft Pool
@@ -18,8 +18,8 @@ export default function NavBar() {
         to="/tournament"
         className={({ isActive }) =>
           isActive
-            ? 'underline font-semibold'
-            : 'hover:underline'
+            ? 'bg-indigo-600 text-white px-3 py-1 rounded-md font-semibold transition'
+            : 'hover:underline px-3 py-1 transition'
         }
       >
         Tournament
