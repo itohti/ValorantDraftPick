@@ -91,17 +91,17 @@ export default function Teams() {
             <>
               <div className="grid grid-cols-6 gap-4 p-2">
                 <Button
-                  label="+"
+                  label="Create Team"
                   onClick={createPopout}
-                  className="text-white text-xl col-span-6"
+                  className="bg-gray-700 hover:bg-gray-600 text-white text-md font-medium col-span-6 py-2 rounded-lg shadow-sm"
                 />
               </div>
               <div className="h-1 h-px bg-gradient-to-r from-white/50 to-white/0" />
               <Button
-                label={"Start Tournament"}
+                label="Start Tournament"
                 disabled={teams.length < 2}
                 onClick={startTournament}
-                className="mt-4 w-full"
+                className="mt-4 w-full bg-green-600 hover:bg-green-700 text-white text-lg font-bold py-3 rounded-xl shadow-md"
               />
             </>
           ) : (
